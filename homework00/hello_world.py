@@ -5,4 +5,3 @@ def text():
     вывода
     приветствия"""
     return "message"
-    
