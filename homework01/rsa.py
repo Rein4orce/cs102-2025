@@ -26,7 +26,7 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
         i += 2
-    pass
+    return True
 
 
 def gcd(a: int, b: int) -> int:
@@ -42,7 +42,7 @@ def gcd(a: int, b: int) -> int:
 
     while b != 0:
         a, b = b, a % b
-    pass
+    return a
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -62,7 +62,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
 
     if old_r != 1:
         raise ValueError("Multiplicative inverse does not exist")
-    pass
+    return old_s % phi
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
