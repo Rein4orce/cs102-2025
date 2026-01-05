@@ -5,7 +5,7 @@ T = tp.TypeVar("T")
 
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
-    """ Прочитать Судоку из указанного файла """
+    """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
@@ -19,15 +19,11 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print(
-            "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
-            )
-        )
+        print("".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
         if str(row) in "25":
             print(line)
     print()
@@ -43,7 +39,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     """
     circles = len(values) // n
 
-    result = [values[i:i+n] for i in range(0, len(values), n)]
+    result = [values[i : i + n] for i in range(0, len(values), n)]
     return result
 
 
@@ -71,6 +67,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     """
     _, col = pos
     return [grid[row][col] for row in range(len(grid))]
+
 
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     """Возвращает все значения из квадрата, в который попадает позиция pos
@@ -106,8 +103,9 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     """
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            if grid[i][j] == '.':
+            if grid[i][j] == ".":
                 return i, j
+
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
     """Вернуть множество возможных значения для указанной позиции
@@ -120,20 +118,21 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     True
     """
     row, col = pos
-    if grid[row][col] != '.':
+    if grid[row][col] != ".":
         return set()
 
     used_in_row = set(get_row(grid, pos))
     used_in_col = set(get_col(grid, pos))
     used_in_block = set(get_block(grid, pos))
     used_values = used_in_row.union(used_in_col).union(used_in_block)
-    used_values.discard('.')
+    used_values.discard(".")
     all_values = set(str(i) for i in range(1, 10))
 
     return all_values - used_values
 
+
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Решение пазла, заданного в grid """
+    """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
         2. Найти все возможные значения, которые могут находиться на этой позиции
@@ -157,13 +156,13 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
         if solution is not None:
             return solution
 
-        grid[row][col] = '.'
+        grid[row][col] = "."
 
     return None
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
+    """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
     n = len(solution)
 
@@ -171,13 +170,17 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
         for j in range(n):
             current_pos = (i, j)
             current_value = solution[i][j]
-            if current_value not in {'1', '2', '3', '4', '5', '6', '7', '8', '9'}:
+            if current_value not in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}:
                 return False
 
             row_values = get_row(solution, current_pos)
             col_values = get_col(solution, current_pos)
             block_values = get_block(solution, current_pos)
-            if row_values.count(current_value) > 1 or col_values.count(current_value) > 1 or block_values.count(current_value) > 1:
+            if (
+                row_values.count(current_value) > 1
+                or col_values.count(current_value) > 1
+                or block_values.count(current_value) > 1
+            ):
                 return False
 
     return True
@@ -204,8 +207,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-
-    grid = [['.' for _ in range(9)] for _ in range(9)]
+    grid = [["." for _ in range(9)] for _ in range(9)]
     if N > 0:
         full_grid = generate_sudoku(N)
         positions = [(i, j) for i in range(9) for j in range(9)]
