@@ -12,7 +12,7 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    if n < 2 or n % 2 == 0:
+    if (n < 2) or (n % 2 == 0):
         return False
     if n == 2:
         return True
