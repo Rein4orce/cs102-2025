@@ -208,14 +208,21 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    grid = [["." for _ in range(9)] for _ in range(9)]
-    if N > 0:
-        full_grid = generate_sudoku(N)
-        positions = [(i, j) for i in range(9) for j in range(9)]
+    if N < 0:
+        N = 0
+    if N > 81:
+        N = 81
+    empty_grid = [["." for _ in range(9)] for _ in range(9)]
+    full_grid = solve(empty_grid)
+    if full_grid is None:
+        return empty_grid
 
-        for idx in range(N):
-            i, j = positions[idx]
-            grid[i][j] = full_grid[i][j]
+    grid = [["." for _ in range(9)] for _ in range(9)]
+    positions = [(i, j) for i in range(9) for j in range(9)]
+    for idx in range(N):
+        i, j = positions[idx]
+        grid[i][j] = full_grid[i][j]
+
     return grid
 
 
